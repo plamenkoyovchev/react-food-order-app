@@ -1,13 +1,17 @@
 import { useReducer } from "react";
 import CartContext from "./cart-context";
 
+const ADD_CART_ITEM = "ADD_CART_ITEM";
+const REMOVE_CART_ITEM = "REMOVE_CART_ITEM";
+const CLEAR_CART_ITEMS = "CLEAR_CART_ITEMS";
+
 const initialState = {
 	items: [],
 	totalAmount: 0,
 };
 
 const cartReducer = (state, action) => {
-	if (action.type === "ADD_CART_ITEM") {
+	if (action.type === ADD_CART_ITEM) {
 		let updatedItems;
 		const itemToUpdateIndex = state.items.findIndex(i => i.id === action.item.id);
 		const itemToUpdate = state.items[itemToUpdateIndex];
@@ -32,7 +36,7 @@ const cartReducer = (state, action) => {
 		};
 	}
 
-	if (action.type === "REMOVE_CART_ITEM") {
+	if (action.type === REMOVE_CART_ITEM) {
 		const itemToRemoveIndex = state.items.findIndex(i => i.id === action.id);
 		const itemToRemove = state.items[itemToRemoveIndex];
 		if (!itemToRemove) {
@@ -61,8 +65,8 @@ const cartReducer = (state, action) => {
 		};
 	}
 
-	if (action.type === "CLEAR_CART_ITEMS") {
-		return { ...initialState };
+	if (action.type === CLEAR_CART_ITEMS) {
+		return initialState;
 	}
 
 	return state;
@@ -72,13 +76,13 @@ const CartProvider = (props) => {
 	const [cartState, dispatch] = useReducer(cartReducer, initialState);
 
 	const addItemToCartHandler = (item) => {
-		dispatch({ type: "ADD_CART_ITEM", item });
+		dispatch({ type: ADD_CART_ITEM, item });
 	};
 	const removeItemFromCartHandler = (id) => {
-		dispatch({ type: "REMOVE_CART_ITEM", id });
+		dispatch({ type: REMOVE_CART_ITEM, id });
 	};
 
-	const clearCartItemsHandler = () => dispatch({ type: "CLEAR_CART_ITEMS" });
+	const clearCartItemsHandler = () => dispatch({ type: CLEAR_CART_ITEMS });
 
 	const cartContext = {
 		items: cartState.items,
