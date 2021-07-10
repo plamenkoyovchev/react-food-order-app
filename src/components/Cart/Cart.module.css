@@ -19,7 +19,7 @@
     text-align: right;
 }
 
-button {
+.actions button {
     font: inherit;
     cursor: pointer;
     background-color: transparent;
@@ -36,7 +36,7 @@ button {
     color: white;
 }
 
-.button--alt {
+.actions .button--alt {
     color: #8a2b06;
 }
 
