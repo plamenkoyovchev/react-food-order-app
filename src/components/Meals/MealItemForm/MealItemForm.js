@@ -1,23 +1,25 @@
-import React, { useContext, useRef } from 'react';
-import CartContext from '../../../store/cart-context';
+import React, { useRef } from 'react';
 import Input from '../../UI/Input/Input';
 import classes from "./MealItemForm.module.css";
 
+import { cartActions } from "../../../store/slices/cartSlice";
+import { useDispatch } from 'react-redux';
+
 const MealItemForm = ({ id, price, name }) => {
-    const cartContext = useContext(CartContext);
-    const { addItem } = cartContext;
+    const dispatch = useDispatch();
+    const { addItem } = cartActions;
 
     const ref = useRef(1);
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
 
-        addItem({
+        dispatch(addItem({
             id,
             amount: +ref.current.value,
             price,
             name
-        });
+        }));
     };
 
     return (

@@ -1,13 +1,17 @@
-import React, { useContext, useState } from "react";
-import CartContext from "../../store/cart-context";
+import React, { useState } from "react";
 import CartItem from "./CartItem";
 import Modal from "../UI/Modal/Modal";
 import classes from "./Cart.module.css";
 import Checkout from "../Checkout/Checkout";
 
+import { cartActions } from "../../store/slices/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+
 const Cart = ({ onClose }) => {
-	const cartContext = useContext(CartContext);
-	const { items, totalAmount, addItem, removeItem, clearCart } = cartContext;
+	const dispatch = useDispatch();
+
+	const { items, totalAmount } = useSelector((state) => state.cart);
+	const { addItem, removeItem, clearCart } = cartActions;
 
 	const [isCheckout, setIsCheckout] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -16,12 +20,14 @@ const Cart = ({ onClose }) => {
 	const hasItems = items.length > 0;
 
 	const onAddHandler = (item) =>
-		addItem({
-			...item,
-			amount: 1,
-		});
+		dispatch(
+			addItem({
+				...item,
+				amount: 1,
+			})
+		);
 
-	const onRemoveHandler = (id) => removeItem(id);
+	const onRemoveHandler = (id) => dispatch(removeItem(id));
 
 	const orderHandler = () => setIsCheckout(true);
 
@@ -39,7 +45,7 @@ const Cart = ({ onClose }) => {
 				}
 			);
 
-			clearCart();
+			dispatch(clearCart());
 		} catch (error) {
 		} finally {
 			setIsSubmitting(false);

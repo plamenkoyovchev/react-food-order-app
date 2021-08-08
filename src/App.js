@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { Provider } from "react-redux";
 import Cart from "./components/Cart/Cart";
 import Header from "./components/Layout/Header/Header";
 import Meals from "./components/Meals/Meals";
-import CartProvider from "./store/CartProvider";
+import { store } from "./store/store";
 
 function App() {
 
@@ -13,13 +14,13 @@ function App() {
   const hideCartHandler = () => setShowCart(false);
 
   return (
-    <CartProvider>
+    <Provider store={store}>
       <Header onShowCart={showCartHandler} />
       <main>
         {showCart && <Cart onClose={hideCartHandler} />}
         <Meals />
       </main>
-    </CartProvider>
+    </Provider>
   );
 }
 
